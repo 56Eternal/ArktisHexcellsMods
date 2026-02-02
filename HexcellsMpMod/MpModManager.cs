@@ -22,7 +22,7 @@ namespace HexcellsMpMod
 
 		// Client/server
 		private Server server;
-		private Client client;
+		public Client client { get; private set; }
 
 		// References to Hexcells classes
 		private MusicDirector musicDirector = null;
