@@ -423,7 +423,7 @@ namespace HexcellsMpMod
 				{
 					float time = (hexPeer.CurrentState != HexPeer.State.InPuzzle) ? hexPeer.Time : hexPeer.SmoothedTime;
 					TimeSpan timeSpan = TimeSpan.FromSeconds(time);
-					string timeText = $"{Mathf.FloorToInt((float)timeSpan.TotalMinutes):D2}:{timeSpan.Seconds:D2}:{timeSpan.Milliseconds:D2}";
+					string timeText = $"{Mathf.FloorToInt((float)timeSpan.TotalMinutes):D2}:{timeSpan.Seconds:D2}:{timeSpan.Milliseconds:D3}";
 					int progressInt = (int)(100f * hexPeer.Progress);
 
 					if (hexPeer.CurrentState == HexPeer.State.InPuzzleComplete)
