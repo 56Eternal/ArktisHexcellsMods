@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Patches\HexScoringPatches.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Data\Materials.cs" />
     <Compile Include="Patches\HexBehaviourPatches.cs" />

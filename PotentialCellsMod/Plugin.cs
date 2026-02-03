@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using IllusionPlugin;
 using PotentialCellsMod.Extensions;
+using PotentialCellsMod.Patches;
 using UnityEngine;
 
 namespace PotentialCellsMod
@@ -9,7 +10,7 @@ namespace PotentialCellsMod
     {
         public string Name => "Hexcells Potential Cells";
 
-        public string Version => "1.1.0";
+        public string Version => "1.2.0";
 
         public void OnApplicationQuit() { }
 
@@ -35,6 +36,7 @@ namespace PotentialCellsMod
                         hexBehaviour.ResetToOrange();
                     }
                 }
+                HexScoringStartPatch.PotentialCellsReset();
             }
         }
     }

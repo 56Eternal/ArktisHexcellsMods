@@ -78,15 +78,76 @@ namespace PotentialCellsMod.Patches
                 Material nextMaterial;
 
                 if (renderer.sharedMaterial == highlightedMaterial)
+                {
                     nextMaterial = Data.Materials.potentialMaterialLight;
+                    Total.UpdateTotalBlueCount(true);
+                }
                 else if (renderer.sharedMaterial == Data.Materials.potentialMaterialLight)
+                {
                     nextMaterial = Data.Materials.potentialMaterialDark;
+                    Total.UpdateTotalBlueCount(false);
+                }
                 else
                     nextMaterial = highlightedMaterial;
                 renderer.material = nextMaterial;
 
                 musicDirector.PlayNoteA(__instance.transform.position.x / 7.04f);
             }
+        }
+    }
+
+    /// <summary>
+    /// update total blue count if you solve a potential cell
+    /// </summary>
+    /// <param name="__instance"></param>
+    [HarmonyPatch(typeof(HexBehaviour), nameof(HexBehaviour.DestroyClick))]
+    class HexBehaviourDestroyClickPatch
+    {
+        static void Prefix(HexBehaviour __instance)
+        {
+            var rendererField =
+                typeof(HexBehaviour).GetField("thisRenderer", BindingFlags.Public | BindingFlags.Instance);
+            Renderer renderer = rendererField.GetValue(__instance) as Renderer;
+            if (renderer.sharedMaterial == Data.Materials.potentialMaterialLight)
+            {
+                if (!__instance.containsShapeBlock)
+                {
+                    Total.UpdateTotalBlueCount(false);
+                }
+            }
+        }
+    }
+    
+    /// <summary>
+    /// update total blue count if you solve a potential cell
+    /// </summary>
+    [HarmonyPatch(typeof(HexBehaviour), nameof(HexBehaviour.HighlightClick))]
+    class HexBehaviourHighlightClickPatch
+    {
+        
+        static void Prefix(HexBehaviour __instance)
+        {
+            var rendererField =
+                typeof(HexBehaviour).GetField("thisRenderer", BindingFlags.Public | BindingFlags.Instance);
+            Renderer renderer = rendererField.GetValue(__instance) as Renderer;
+            if (renderer.sharedMaterial == Data.Materials.potentialMaterialLight)
+            {
+                if (__instance.containsShapeBlock)
+                {
+                    Total.UpdateTotalBlueCount(false);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// helper class to update total remaining count
+    /// </summary>
+    class Total
+    {
+        public static void UpdateTotalBlueCount(bool added)
+        {
+            HexScoringStartPatch.PotentialCellPlacementChanged(added);
         }
     }
 }
