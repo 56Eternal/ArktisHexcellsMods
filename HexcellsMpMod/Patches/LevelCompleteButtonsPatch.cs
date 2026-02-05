@@ -14,8 +14,10 @@ namespace HexcellsMpMod.Patches
     [HarmonyPatch(typeof(LevelCompleteButtons), nameof(LevelCompleteButtons.OnMouseOver))]
     class LevelCompleteButtonsMouseOverPatch
     {
-        private static Func<Boolean> everyoneFinished = () => MpModManager.Instance.client.Peers.All(p => p.CurrentState != HexPeer.State.InPuzzle);
-
+        private static Func<Boolean> everyoneFinished = () =>
+            !MpModManager.Instance.InSession ||
+            (MpModManager.Instance.client?.Peers?.All(p => p.CurrentState != HexPeer.State.InPuzzle) ?? true);
+            
         static bool Prefix(LevelCompleteButtons __instance)
         {
             var buttonTypeField = typeof(LevelCompleteButtons).GetField("buttonType", BindingFlags.Instance | BindingFlags.Public);
